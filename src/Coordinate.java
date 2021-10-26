@@ -1,5 +1,3 @@
-package src;
-
 /**
  * The Coordinate class serves as a template for (x,y) coordinates.
  *
