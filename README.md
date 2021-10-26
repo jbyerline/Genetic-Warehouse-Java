@@ -36,8 +36,8 @@ After running 5 simulation trials where each goes through 400 cycles. I was surp
 ## Graphs:
 As I mentioned above, these results fluctuate more than I would have expected but I believe that this is due to the random nature of the problem.
 
-![Graph 1](graph1.png)
-![Graph 2](graph2.png)
+![Graph 1](https://github.com/jbyerline/Genetic-Warehouse-Java/blob/master/Graph1.png?raw=true)
+![Graph 2](https://github.com/jbyerline/Genetic-Warehouse-Java/blob/master/Graph2.png?raw=true)
 
 ## Notable Additions:
 The program prints out a map of the home and warehouse locations in the console. The 4’s represent homes to deliver to. The 8 is warehouse 1, and the 9 is warehouse 2. The *’s represent all of the other houses in this perfect grid city.
