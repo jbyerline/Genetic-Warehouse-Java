@@ -9,6 +9,8 @@ public class Generations {
     int childCounter = 0;
     int numOfChromosomes;
     ArrayList<Coordinate> houseCoordinates;
+    ArrayList<Double> fittnessList = new ArrayList<>();
+
 
     Generations(int chromosomeLength, int numbersOfCycles, int numOfChromosomes, ArrayList<Coordinate> houseCoordinates) {
         // Instantiate src.Chromosome Arrays
@@ -29,15 +31,16 @@ public class Generations {
         // Run operation on chromosomes
         for (int i = 0; i < numbersOfCycles; i++) {
             performOperations();
-            System.out.print("Average Fitness for cycle: ");
-            System.out.print(i);
-            System.out.print(" is :");
-            System.out.print(fittestChromosome(currentGenChromosomes));
-            System.out.println();
+            fittnessList.add(fittestChromosome(currentGenChromosomes));
+            System.out.print("Average Fitness for cycle: " + i + " is: " + fittestChromosome(currentGenChromosomes) + "\n");
             for (int j = 0; j < numOfChromosomes; j++) {
                 currentGenChromosomes[j].genes = nextGenChromosomes[j].genes;
             }
         }
+        Double average = fittnessList.stream().mapToDouble(val -> val).average().orElse(0.0);
+
+        System.out.println("\nStarting Fitness: " + fittnessList.get(0));
+        System.out.println("Overall Average: " + average);
     }
 
     public int generationFitness(Chromosome[] generation) {

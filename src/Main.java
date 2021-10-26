@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class TravellingSalesman {
+public class Main {
     public static void main(String[] args) {
         // 2D array for
         Grid map = new Grid(30, new Coordinate(5,5), new Coordinate(25,25));
@@ -11,7 +11,7 @@ public class TravellingSalesman {
 
         map.printCurrentGrid();
 
-        new Generations(25, 400, 25, houseLocations);
+        new Generations(25, 400, 15, houseLocations);
 
     }
 }

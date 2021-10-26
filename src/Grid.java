@@ -24,10 +24,6 @@ public class Grid {
         this.warehouseB_Coord = warehouseB_Coord;
     }
 
-    /**
-     * This method randomly fills the game grid with a percentage of given obstacles.
-     * @param numberOfHouses the amount of spaces in the grid containing 1's by %
-     */
     public ArrayList<Coordinate> randomizeGrid(int numberOfHouses) {
         // Calculate number of spaces to block based on percentage
         int spacesToFill = numberOfHouses;
