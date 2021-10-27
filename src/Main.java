@@ -2,7 +2,6 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-        // 2D array for
         Grid map = new Grid(30, new Coordinate(5,5), new Coordinate(25,25));
 
         ArrayList<Coordinate> houseLocations = map.randomizeGrid(40);

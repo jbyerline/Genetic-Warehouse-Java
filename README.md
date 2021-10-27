@@ -43,7 +43,7 @@ As I mentioned above, these results fluctuate more than I would have expected bu
 The program prints out a map of the home and warehouse locations in the console. The 4’s represent homes to deliver to. The 8 is warehouse 1, and the 9 is warehouse 2. The *’s represent all of the other houses in this perfect grid city.
 
 ## Running Instructions:
-This program was written with Java 17.0.1. The executable jar file can be run using the command java -jar Program3.jar on MacOS. Please keep in mind, to execute a jar file, you need to have the same version of Java installed on your system. Otherwise, you can compile the source code using your local java by opening the code in and IDE and executing the main method.
+This program was written with Java 17.0.1. The executable jar file can be run using the command `java -jar Program3.jar` on MacOS. Please keep in mind, to execute a jar file, you need to have the same version of Java installed on your system. Otherwise, you can compile the source code using your local java by opening the code in and IDE and executing the main method.
 
 Once the program has started it will run based on the hard coded program parameters. It will print out the map of coordinates, a list of home coordinates, the fitness per each of the 400 generations, and finally, the average fitness of those 400 generations.
 

@@ -3,7 +3,7 @@ import java.util.Collections;
 
 public class Chromosome {
     int chromosomeLength;
-    Chromosome child1, child2;
+    Chromosome firstChild, secondChild;
     ArrayList<Integer> genes = new ArrayList<>();
 
     Chromosome(int length) {
@@ -21,34 +21,33 @@ public class Chromosome {
         }
     }
 
-    public double fitness() {
-        double score = 0;
+    public double calculateFitness() {
+        double fitness = 0;
         for (int i = 1; i < chromosomeLength; i++) {
-            score = score + ((genes.get(i) - genes.get(i - 1)) * (genes.get(i) - genes.get(i - 1))) + 2 * (Math.sqrt(genes.get(i) * genes.get(i - 1)));
+            fitness = fitness + ((genes.get(i) - genes.get(i - 1)) * (genes.get(i) - genes.get(i - 1))) + 2 * (Math.sqrt(genes.get(i) * genes.get(i - 1)));
         }
-        return score;
+        return fitness;
     }
 
 
-    public Chromosome mutation() {
+    public Chromosome mutate() {
         int random = (int) (Math.random() * chromosomeLength);
         if (random == chromosomeLength - 1) {
             random--;
         }
         int valueAtOne = (genes.get(random));
         int valueAtTwo = (genes.get(random + 1));
-        Chromosome child1 = new Chromosome(0, chromosomeLength);
-        child1.genes = genes;
-        child1.genes.set(random, valueAtTwo);
-        child1.genes.set(random + 1, valueAtOne);
-        return child1;
+        Chromosome child = new Chromosome(0, chromosomeLength);
+        child.genes = genes;
+        child.genes.set(random, valueAtTwo);
+        child.genes.set(random + 1, valueAtOne);
+        return child;
     }
 
-    public void crossover(Chromosome parent2) {
+    public void crossover(Chromosome parentChromosome) {
         while (true) {
-
-            child1 = new Chromosome(0, chromosomeLength);
-            child2 = new Chromosome(0, chromosomeLength);
+            firstChild = new Chromosome(0, chromosomeLength);
+            secondChild = new Chromosome(0, chromosomeLength);
             int random1 = (int) (Math.random() * chromosomeLength);
             int random2 = (int) (Math.random() * chromosomeLength);
             int start, end;
@@ -59,53 +58,50 @@ public class Chromosome {
                 start = random1;
                 end = random2;
             }
-
             for (int i = 0; i < start; i++) {
-                int index1 = (parent2.genes.indexOf(genes.get(i)));
+                int index1 = (parentChromosome.genes.indexOf(genes.get(i)));
                 int swappingValue1 = genes.get(index1);
-                int index2 = (genes.indexOf(parent2.genes.get(i)));
-                int swappingValue2 = parent2.genes.get(index2);
-
+                int index2 = (genes.indexOf(parentChromosome.genes.get(i)));
+                int swappingValue2 = parentChromosome.genes.get(index2);
                 if (index1 >= start && index1 <= end) {
-
-                    child1.genes.set(i, swappingValue1);
+                    firstChild.genes.set(i, swappingValue1);
                 } else {
-                    child1.genes.set(i, genes.get(i));
+                    firstChild.genes.set(i, genes.get(i));
                 }
                 if (index2 >= start && index2 <= end) {
-                    child2.genes.set(i, swappingValue2);
+                    secondChild.genes.set(i, swappingValue2);
                 } else {
-                    child2.genes.set(i, parent2.genes.get(i));
+                    secondChild.genes.set(i, parentChromosome.genes.get(i));
                 }
             }
             for (int i = start; i <= end; i++) {
-                child1.genes.set(i, parent2.genes.get(i));
-                child2.genes.set(i, genes.get(i));
+                firstChild.genes.set(i, parentChromosome.genes.get(i));
+                secondChild.genes.set(i, genes.get(i));
             }
             for (int i = end + 1; i < chromosomeLength; i++) {
-                int index1 = (parent2.genes.indexOf(genes.get(i)));
+                int index1 = (parentChromosome.genes.indexOf(genes.get(i)));
                 int swappingValue1 = genes.get(index1);
-                int index2 = (genes.indexOf(parent2.genes.get(i)));
-                int swappingValue2 = parent2.genes.get(index2);
+                int index2 = (genes.indexOf(parentChromosome.genes.get(i)));
+                int swappingValue2 = parentChromosome.genes.get(index2);
 
                 if (index1 >= start && index1 <= end) {
-                    child1.genes.set(i, swappingValue1);
+                    firstChild.genes.set(i, swappingValue1);
                 } else {
-                    child1.genes.set(i, genes.get(i));
+                    firstChild.genes.set(i, genes.get(i));
                 }
                 if (index2 >= start && index2 <= end) {
-                    child2.genes.set(i, swappingValue2);
+                    secondChild.genes.set(i, swappingValue2);
                 } else {
-                    child2.genes.set(i, parent2.genes.get(i));
+                    secondChild.genes.set(i, parentChromosome.genes.get(i));
                 }
             }
-            if (child1.validate() && child2.validate()) {
+            if (firstChild.validateChildren() && secondChild.validateChildren()) {
                 break;
             }
         }
     }
 
-    public boolean validate() {
+    public boolean validateChildren() {
         int desiredSum = 0, originalSum = 0;
         for (int i = 0; i < chromosomeLength; i++) {
             desiredSum += i;

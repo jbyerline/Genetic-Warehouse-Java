@@ -25,7 +25,7 @@ public class Generations {
             currentGenChromosomes[i] = new Chromosome(chromosomeLength);
         }
         for (int i = 0; i < numOfChromosomes; i++) {
-            generationFitnessSum += currentGenChromosomes[i].fitness();
+            generationFitnessSum += currentGenChromosomes[i].calculateFitness();
         }
 
         // Run operation on chromosomes
@@ -38,7 +38,6 @@ public class Generations {
             }
         }
         Double average = fittnessList.stream().mapToDouble(val -> val).average().orElse(0.0);
-
         System.out.println("\nStarting Fitness: " + fittnessList.get(0));
         System.out.println("Overall Average: " + average);
     }
@@ -46,17 +45,17 @@ public class Generations {
     public int generationFitness(Chromosome[] generation) {
         int fitness = 0;
         for (int i = 0; i < numOfChromosomes; i++) {
-            fitness += generation[i].fitness();
+            fitness += generation[i].calculateFitness();
         }
         return (fitness / numOfChromosomes);
     }
 
     public double fittestChromosome(Chromosome[] generation) {
-        int fitness = 99999999;
+        int fitness = 100000000;
         for (int i = 0; i < numOfChromosomes; i++) {
-            if (fitness > generation[i].fitness()) ;
+            if (fitness > generation[i].calculateFitness()) ;
             {
-                fitness = (int) generation[i].fitness();
+                fitness = (int) generation[i].calculateFitness();
             }
         }
         return fitness;
@@ -65,12 +64,12 @@ public class Generations {
     public void filterBest() {
         double[] copy = new double[childCounter];
         for (int i = 0; i < childCounter; i++) {
-            copy[i] = intermediateGenChromosomes[i].fitness();
+            copy[i] = intermediateGenChromosomes[i].calculateFitness();
         }
         Arrays.sort(copy);
         for (int i = 0; i < numOfChromosomes; i++) {
             for (int j = 0; j < childCounter; j++) {
-                if (intermediateGenChromosomes[j].fitness() == copy[i]) {
+                if (intermediateGenChromosomes[j].calculateFitness() == copy[i]) {
                     nextGenChromosomes[i] = intermediateGenChromosomes[j];
                 }
             }
@@ -80,11 +79,11 @@ public class Generations {
 
     public void performOperations() {
         double r = Math.random();
-        int random1, random2;
+        int firstRoulette, secondRoulette;
         while (childCounter < numOfChromosomes * 2) {
             if (r > 0.5) {
                 int x = (int) (Math.random() * numOfChromosomes);
-                intermediateGenChromosomes[childCounter] = currentGenChromosomes[x].mutation();
+                intermediateGenChromosomes[childCounter] = currentGenChromosomes[x].mutate();
                 childCounter++;
                 r = Math.random();
             } else {
@@ -92,16 +91,16 @@ public class Generations {
                     break;
                 }
                 while (true) {
-                    random1 = rouletteWheel();
-                    random2 = rouletteWheel();
-                    if (random1 != random2) {
+                    firstRoulette = rouletteWheel();
+                    secondRoulette = rouletteWheel();
+                    if (firstRoulette != secondRoulette) {
                         break;
                     }
                 }
                 r = Math.random();
-                currentGenChromosomes[random1].crossover(currentGenChromosomes[random2]);
-                intermediateGenChromosomes[childCounter] = currentGenChromosomes[random1].child1;
-                intermediateGenChromosomes[childCounter + 1] = currentGenChromosomes[random1].child2;
+                currentGenChromosomes[firstRoulette].crossover(currentGenChromosomes[secondRoulette]);
+                intermediateGenChromosomes[childCounter] = currentGenChromosomes[firstRoulette].firstChild;
+                intermediateGenChromosomes[childCounter + 1] = currentGenChromosomes[firstRoulette].secondChild;
                 childCounter = childCounter + 2;
             }
         }
@@ -113,7 +112,7 @@ public class Generations {
         double[] finalProbabilities = new double[numOfChromosomes];
         double sumOfProbabilities = 0;
         for (int i = 0; i < numOfChromosomes; i++) {
-            probabilities[i] = (generationFitnessSum / currentGenChromosomes[i].fitness());
+            probabilities[i] = (generationFitnessSum / currentGenChromosomes[i].calculateFitness());
             sumOfProbabilities += probabilities[i];
         }
         for (int i = 0; i < numOfChromosomes; i++) {
